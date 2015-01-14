@@ -24,7 +24,7 @@ Compile with the NXC compiler.
 	- Delayed Auto Shift
 	- Wall kicks
 - Almost official "kicking"
-	- -Allows only 1 floor kick per piece.- *Deleted* (Don't like.)
+	- Officially only allows 1 floor kick per piece. *Disabled*
 	- Always allows the `I` piece to wall kick.
 	- Allows the `I` piece to floor kick even when it's not touching the ground
 - Adheres to all of the [SRS guidelines](http://tetris.wikia.com/wiki/SRS), and some of the [ARS guidelines](http://tetris.wikia.com/wiki/ARS).
