@@ -3,16 +3,17 @@
 //Finished 2013-01-04
 
 //              PREPROCESSOR
-#include "Button+-.nxc"
-#include "Highscore.nxc"
+// https://github.com/ArtskydJ/nxc-modules
+#include "../nxc-modules/Button+-.nxc"
+#include "../nxc-modules/Highscore.nxc"
 #include "RotatedNumbers.nxc"
 //Dimensions / Graphics
 #define blksz   4
 #define width   10
 #define height  25
 #define TX      35
-#define SX      94
-#define SY      61
+#define SX      98
+#define SY      62
 #define msgX    0
 #define msgY    56
 #define defaultmode     0
@@ -157,6 +158,10 @@ string accesshigh ="";
 
 
 //                 SUBROUTINES
+bool ButtonPressed2(int INbutton) {
+	return ButtonPressed(INbutton, false);
+}
+
 void selectGame(bool INfastmode)
 	{
 	prevQuadClear=false;
@@ -172,7 +177,7 @@ void selectGame(bool INfastmode)
 		}
 	else
 		{
-		while (ButtonPressed(BTNRIGHT)==false)
+		while (ButtonPressed2(BTNRIGHT)==false)
 			{
 			gamespeed=senseButton(gamespeed,false,1,2,false);
 			ClearScreen();
@@ -186,8 +191,8 @@ void selectGame(bool INfastmode)
 			Wait(50);
 			}
 		TextOut(TX,LCD_LINE1,"TETRIS",  0);
-		until (ButtonPressed(BTNRIGHT)==false) {}
-		while (ButtonPressed(BTNRIGHT)==false)
+		until (ButtonPressed2(BTNRIGHT)==false) {}
+		while (ButtonPressed2(BTNRIGHT)==false)
 			{
 			gametype=senseButton(gametype,false,1,4,false);
 			ClearScreen();
@@ -204,7 +209,7 @@ void selectGame(bool INfastmode)
 			}
 		}
 	TextOut(TX,LCD_LINE1,"TETRIS",  0);
-	until (ButtonPressed(BTNRIGHT)==false) {}
+	until (ButtonPressed2(BTNRIGHT)==false) {}
 	//
 	if      (gamespeed==0)
 		{
@@ -400,7 +405,7 @@ bool inputOutput(bool INallowInput, bool INallowOutput, bool INallowDraw, int IN
 //INPUT
 	if (INallowInput)
 		{
-		if (ButtonPressed(BtnDrop))
+		if (ButtonPressed2(BtnDrop))
 			{
 			lockDelay=0;
 			if (prevDrp<waitHardDrop)
@@ -415,7 +420,7 @@ bool inputOutput(bool INallowInput, bool INallowOutput, bool INallowDraw, int IN
 			if (drop==dropWHard) {drop=dropHard; lockDelay=waitLock;}
 			else                 {drop=0;}
 			}
-		if (ButtonPressed(BtnRotate))
+		if (ButtonPressed2(BtnRotate))
 			{
 			if (prevRot==0)
 				{
@@ -434,7 +439,7 @@ bool inputOutput(bool INallowInput, bool INallowOutput, bool INallowDraw, int IN
 			{
 			prevRot=0;
 			}
-		if (ButtonPressed(BtnMoveL))
+		if (ButtonPressed2(BtnMoveL))
 			{
 			prevLft++;
 			if ((prevLft>=waitSlowMove || prevLft<0) && move(lft,tetUD))
@@ -450,7 +455,7 @@ bool inputOutput(bool INallowInput, bool INallowOutput, bool INallowDraw, int IN
 			{
 			prevLft=-5;
 			}
-		if (ButtonPressed(BtnMoveR))
+		if (ButtonPressed2(BtnMoveR))
 			{
 			prevRht++;
 			if ((prevRht>=waitSlowMove || prevRht<0) && move(rht,tetUD))
@@ -564,7 +569,7 @@ bool inputOutput(bool INallowInput, bool INallowOutput, bool INallowDraw, int IN
 		//CURRENT TETROMINO / SCORE
 		LineOut(92,width*blksz+1,92,63,0);
 		displayTetromino(currentPiece,currentRotate,tetLR*blksz,tetUD*blksz,1);
-		RotatedNumbersOut(SX,SY,score);
+		RotatedStringOut(SX, SY,  NumToStr(score), 3); // orientation 3
 		}
 
 	return temppiecemoving;
@@ -746,13 +751,13 @@ bool gameEnd()
 	msg=readHighName(accesshigh);
 	TextOut(0,LCD_LINE6,StrCat("N:",msg),0);
 	TextOut(5,LCD_LINE8,"Yes  Again?  No",0);
-	until (ButtonPressed(BTNLEFT)==false
-		 && ButtonPressed(BTNRIGHT)==false) {}
-	until (ButtonPressed(BTNLEFT)==true
-		 || ButtonPressed(BTNRIGHT)==true)  {}
-	plyagn=ButtonPressed(BTNLEFT)==true;
-	until (ButtonPressed(BTNLEFT)==false
-		 && ButtonPressed(BTNRIGHT)==false) {}
+	until (ButtonPressed2(BTNLEFT)==false
+		 && ButtonPressed2(BTNRIGHT)==false) {}
+	until (ButtonPressed2(BTNLEFT)==true
+		 || ButtonPressed2(BTNRIGHT)==true)  {}
+	plyagn=ButtonPressed2(BTNLEFT)==true;
+	until (ButtonPressed2(BTNLEFT)==false
+		 && ButtonPressed2(BTNRIGHT)==false) {}
 	return plyagn;
 	}
 
@@ -895,7 +900,7 @@ void debug(int INmode)
 				ClearScreen();
 				displayTetromino(tets*4,angl,0,0,0);
 				Wait(500);
-				until (!ButtonPressed(3)){}
+				until (!ButtonPressed2(3)){}
 				}
 			}
 		}
@@ -958,12 +963,12 @@ void debug(int INmode)
 task main()
 	{
 	int mode=defaultmode;
-	/*while (!ButtonPressed(3))
+	/*while (!ButtonPressed2(3))
 		{
 		mode=senseButton(mode,true,1,6,false);
 		NumOut(48,0,mode,0);
 		}
-	until (!ButtonPressed(3)) {}*/
+	until (!ButtonPressed2(3)) {}*/
 	if (mode==0||mode==1)
 		{
 		SetLongAbort(true);
@@ -1001,3 +1006,7 @@ task main()
 		//debug(mode);
 		}
 	}
+
+
+
+
